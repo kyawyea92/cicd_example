@@ -27,18 +27,26 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        
+    - name: Change one sub-drictory
+      run: cd CICDemo
+      
     - name: Build with Maven
       run: mvn clean install -DskipTests=true
+      working-directory: CICDemo
+      
     - name: Run tests with Maven
       run: mvn test
+      working-directory: CICDemo
 
       # Package the application (optional step)
     - name: Package with Maven
       run: mvn package -DskipTests=true
+      working-directory: CICDemo
       
     - name: upload artifact
       uses: actions/upload-artifact@v4.6.0
       with:
         name: spring_boot_cicd.zip
-        path: target/*.jar
+        path: CICDemo/target/*.jar
       
