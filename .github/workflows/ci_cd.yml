@@ -48,7 +48,7 @@ jobs:
     - name: upload artifact
       uses: actions/upload-artifact@v4.6.0
       with:
-        name: spring_boot_cicd.zip
+        name: spring_boot_cicd
         path: CICDemo/target/*.jar
   prod:
    needs: [build]
@@ -60,7 +60,7 @@ jobs:
    - name: Download artifact
      uses: actions/download-artifact@v4.1.8
      with:
-      name: spring_boot_cicd.zip
+      name: spring_boot_cicd
    - name: GitHub Release
      uses: softprops/action-gh-release@v2
      with:
@@ -68,5 +68,5 @@ jobs:
       token: ${{secrets.PROD_TOKEN}}
       generate_release_notes: true
       name: Production
-      files: CICDemo/target/*.jar
+      files: ./spring_boot_cicd/*.jar
         
