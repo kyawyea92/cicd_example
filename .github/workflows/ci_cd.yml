@@ -69,7 +69,7 @@ jobs:
       with:
         tag_name: v${{ secrets.PROD_VERSION }}
         generate_release_notes: true
-        name: Production
+        name: v${{vars.PROD_VERSION}}
         files: ./CICDemo/target/*.jar
         token: ${{ secrets.PROD_SECRET }}
 
