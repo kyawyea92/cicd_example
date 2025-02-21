@@ -59,14 +59,18 @@ jobs:
       uses: actions/download-artifact@v4.1.8
       with:
         name: spring_boot_cicd
-
+        path: ./CICDemo/target
+        
+    - name: List files in target directory
+      run: ls -al CICDemo/target
+      
     - name: GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ secrets.PROD_VERSION }}
         generate_release_notes: true
         name: Production
-        files: ./spring_boot_cicd/*.jar
+        files: ./CICDemo/target/*.jar
         token: ${{ secrets.PROD_SECRET }}
 
         
