@@ -13,8 +13,9 @@ on:
     branches: [ "main","dev" ]
   pull_request:
     branches: [ "main","dev" ]
-
+  workflow_dispatch:
 jobs:
+  
   build:
 
     runs-on: ubuntu-latest
@@ -27,9 +28,45 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        
+    - name: Change one sub-drictory
+      run: cd CICDemo
+      
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn clean install -DskipTests=true
+      working-directory: CICDemo
+      
+    - name: Run tests with Maven
+      run: mvn test
+      working-directory: CICDemo
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      # Package the application (optional step)
+    - name: Package with Maven
+      run: mvn package -DskipTests=true
+      working-directory: CICDemo
+      
+    - name: upload artifact
+      uses: actions/upload-artifact@v4.6.0
+      with:
+        name: spring_boot_cicd.zip
+        path: CICDemo/target/*.jar
+  prod:
+   needs: [build]
+   if: github.ref == 'refs/head/main'
+   environment:
+     name: prod
+   runs-on: ubuntu-latest
+   steps:
+   - name: Download artifact
+     uses: actions/download-artifact@v4.1.8
+     with:
+      name: spring_boot_cicd.zip
+   - name: GitHub Release
+     uses: softprops/action-gh-release@v2
+     with:
+      tag_name: v${{vars.PROD_VERSION}}
+      token: ${{secrets.PROD_TOKEN}}
+      generate_release_notes: true
+      name: Production
+      files: spring-boot-cicd.jar
+        
