@@ -68,5 +68,5 @@ jobs:
       token: ${{secrets.PROD_TOKEN}}
       generate_release_notes: true
       name: Production
-      files: spring_boot_cicd.zip
+      files: CICDemo/target/*.jar
         
