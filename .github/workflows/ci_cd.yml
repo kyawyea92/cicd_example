@@ -65,7 +65,6 @@ jobs:
      uses: softprops/action-gh-release@v2
      with:
       tag_name: v${{vars.PROD_VERSION}}
-      token: ${{secrets.PROD_TOKEN}}
       generate_release_notes: true
       name: Production
       files: ./spring_boot_cicd/*.jar
