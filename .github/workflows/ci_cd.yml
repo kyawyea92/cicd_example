@@ -52,7 +52,7 @@ jobs:
         path: CICDemo/target/*.jar
   prod:
    needs: [build]
-   if: github.ref == 'refs/head/main'
+   if: github.ref == 'refs/heads/main'
    environment:
      name: prod
    runs-on: ubuntu-latest
